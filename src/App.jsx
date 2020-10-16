@@ -1,11 +1,19 @@
 import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import Header from './components/Header/Header.jsx'
 import Main from './components/Main/Main.jsx'
 import Features from './components/Features/Features.jsx'
 import Footer from './components/Footer/Footer.jsx'
+import Home from './components/Home/Home.jsx'
+import Calendar from './components/Calendar/Calendar.jsx'
+import Details from './components/Details/Details.jsx'
+import { createBrowserHistory } from "history";
+
+
 import FetchData from './service/FetchData'
 
+const history = createBrowserHistory();
 
 class App extends React.Component {
 
@@ -15,6 +23,7 @@ class App extends React.Component {
         rocket: 'Falcon 1',
         rocketFeatures: null,
         rockets: [],
+        company: null,
         links: {
             website: "https://www.spacex.com/",
             flickr: "https://www.flickr.com/photos/spacex/",
@@ -28,20 +37,25 @@ class App extends React.Component {
         this.updateRocket();
         this.updateLinks();
         this.updateSummary();
+        this.updateCompany();
+    }
+
+    updateCompany() {
+        this.fetchData.getCompany().then(company => this.setState({ company }));
     }
 
     updateLinks() {
-        this.fetchData.getCompany().then(comp_info => comp_info.links).then(links => this.setState({links}));
+        this.fetchData.getCompany().then(comp_info => comp_info.links).then(links => this.setState({ links }));
     }
 
     updateSummary() {
-        this.fetchData.getCompany().then(comp_info => comp_info.summary).then(summary => this.setState({summary}));
+        this.fetchData.getCompany().then(comp_info => comp_info.summary).then(summary => this.setState({ summary }));
     }
 
     updateRocket() {
         this.fetchData.getRocket()
             .then(data => {
-                this.setState({rockets: data.map(item => item.name)});
+                this.setState({ rockets: data.map(item => item.name) });
                 return data;
             })
             .then(data => data.find(item => item.name === this.state.rocket))
@@ -58,12 +72,25 @@ class App extends React.Component {
     render() {
         console.log(this.state)
         return (
-            <>
-                <Header rockets={this.state.rockets} changeRocket={this.changeRocket}/>
-                <Main rocket={this.state.rocket} />
-                <Features rocket={this.state.rocket} rocketFeatures={this.state.rocketFeatures} />
-                <Footer links={this.state.links} summary={this.state.summary}/>
-            </>
+            <BrowserRouter history={history}>
+                <Header rockets={this.state.rockets} changeRocket={this.changeRocket} />
+
+                <Route exact path='/'>
+                    {this.state.company && <Home company={this.state.company} />}
+                </Route>
+                <Route path='/rocket'>
+
+                    <Features rocket={this.state.rocket} rocketFeatures={this.state.rocketFeatures} />
+                </Route>
+
+                <Route path='/calendar'>
+                    <Calendar />
+                </Route>
+
+                <Route path="/details/:id" children={<Details history={history} />} />
+
+                <Footer links={this.state.links} />
+            </BrowserRouter>
         );
     };
 }

@@ -1,27 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
+import { useParams } from 'react-router-dom';
 import './details.css';
+import FetchData from '../../service/FetchData'
 
-function Details() {
+const Details = props => {
+
+    let { id } = useParams();
+
+    const fetchData = new FetchData();
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        fetchData.getLaunch(id)
+            .then((data) => setData(data))
+    }, []);
+
+    if (data.length!=0){
     return (
         <React.Fragment>
             <main className="details">
                 <div className="container">
                     <div className="details-row">
                         <div className="details-image">
-                            <img src="https://images2.imgbox.com/3c/0e/T8iJcSN3_o.png" alt="" />
+                            <img src={data.links.patch.small} alt="" />
                         </div>
                         <div className="details-content">
-                            <p className="details-description">Engine failure at 33 seconds and loss of vehicle</p>
+                            <p className="details-description">{data.details}</p>
                         </div>
                     </div>
                     <div>
-                        <iframe className="details-youtube" width="560" height="315" src="https://www.youtube.com/embed/dLQ2tZEH6G0" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                        <iframe className="details-youtube" width="560" height="315" src={`http://www.youtube.com/embed/${data.links.youtube_id}`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                     </div>
                 </div>
-                <a href="calendar.html" className="button button-back">go back</a>
+                <a onClick={props.history && props.history.goBack} className="button button-back">go back</a>
             </main>
         </React.Fragment>
     );
+    } else {
+        return (<></>)
+    }
 }
 
 export default Details;

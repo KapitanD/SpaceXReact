@@ -2,7 +2,7 @@ import React from 'react';
 import './footer.css';
 import logo from '../../img/logo.svg';
 
-function Footer({links, summary}) {
+function Footer({links}) {
     return (
         <React.Fragment>
             <footer className="footer">
@@ -15,9 +15,6 @@ function Footer({links, summary}) {
                         <li className="item"><a href={links.website} rel="noopener noreferrer" target='_blank' className="item-link">Website</a></li>
                     </ul>
                 </nav>
-                <p className="footer-text">
-                    {summary}
-                </p>
                 <p className="footer-text"> 
                     For additional questions, contact
                     <a className="footer-link" href="mailto:rideshare@spacex.com"

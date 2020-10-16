@@ -1,5 +1,6 @@
 import React from 'react';
 import './features.css';
+import Main from '../Main/Main.jsx'
 import RellaxWrapper from 'react-rellax-wrapper';
 
 const rocket_img = {
@@ -34,6 +35,7 @@ const Features = props => {
 
     return (
         <React.Fragment>
+            <Main rocket={props.rocket} />
             <section className="features">
                 <h2 className="features-title">
                     {props.rocket} <br />Overview

@@ -3,7 +3,8 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	text-align: center;
+    text-align: center;
+    margin: auto;
 }
 
 .footer-nav .item-link {
@@ -26,7 +27,6 @@
 	text-decoration: none;
 	margin-top: 0;
     margin-bottom: 30px;
-    max-width: 60%;
 }
 
 .footer-link {

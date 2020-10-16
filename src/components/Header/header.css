@@ -15,7 +15,12 @@
 }
 
 .item-link.active {
-	color: #33ff33;
+	color: #ffffff;
+}
+
+.item-link.active-rocket {
+    font-weight: 1000;
+    font-size: 14px;
 }
 
 @media (max-width: 768px) {
